@@ -4,15 +4,15 @@
 // Package pkg ...
 package pkg
 
-import "log"
+import std_log "log"
 
 func f(x int) bool {
 	if x == 0 {
-		log.Print("x is zero")
+		std_log.Print("x is zero")
 	} else if x > 0 {
 		return true
 	} else {
-		log.Printf("non-positive x: %d", x)
+		std_log.Printf("non-positive x: %d", x)
 	}
 	return false
 }
