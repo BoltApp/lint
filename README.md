@@ -1,3 +1,17 @@
+# Bolt linter (forked from golint (https://github.com/golang/lint))
+
+Currently no package exists in go that maintains framework for linting
+that allows pluggable linters. This is the best solution that we've
+found to maintain our own set of linters.
+
+## Adding linters
+
+In order to add linters, update `bolt.go` to add your new lint check
+and ensure it is called from within `bolt.go#RunBoltLinters`. Then,
+ensure you add a unit test by adding (or modifying) a file in `testdata/`.
+
+# Everything below here is from the original README.md on golang/lint
+
 Golint is a linter for Go source code.
 
 [![Build Status](https://travis-ci.org/golang/lint.svg?branch=master)](https://travis-ci.org/golang/lint)

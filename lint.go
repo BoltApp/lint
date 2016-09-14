@@ -172,7 +172,6 @@ func (f *file) isTest() bool { return strings.HasSuffix(f.filename, "_test.go") 
 func (f *file) lint() {
 	f.lintPackageComment()
 	f.lintImports()
-	f.lintLogImport()
 	f.lintBlankImports()
 	f.lintExported()
 	f.lintNames()
@@ -188,6 +187,9 @@ func (f *file) lint() {
 	f.lintErrorReturn()
 	f.lintUnexportedReturn()
 	f.lintTimeNames()
+
+	// Run bolt linters
+	RunBoltLinters(f)
 }
 
 type link string
@@ -448,16 +450,6 @@ func (f *file) lintBlankImports() {
 		if imp.Doc == nil && imp.Comment == nil {
 			ref := ""
 			f.errorf(imp, 1, link(ref), category("imports"), "a blank import should be only in a main or test package, or have a comment justifying it")
-		}
-	}
-}
-
-// Examines the imports to ensure no file imports "log" unless it is imported as "std_log"
-func (f *file) lintLogImport() {
-	for i, is := range f.f.Imports {
-		_ = i
-		if is.Path != nil && is.Path.Value == "\"log\"" && !f.isTest() && (is.Name == nil || is.Name.Name != "std_log") {
-			f.errorf(is, 1, link(""), category("imports"), "Do not import log directly, use common/log instead. If necessary name import std_log")
 		}
 	}
 }
